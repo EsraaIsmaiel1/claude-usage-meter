@@ -34,3 +34,16 @@ In the Claude desktop app, where `/plugin` does not run: click **+** next to the
 Every 3 minutes it asks Anthropic for the same figures Claude Code's `/usage` shows, using Claude Code's own login (the mod never sees your token). That address is not a documented API, so if it ever stops working the meter falls back to the figures that come with each Claude reply and shows "(updates after replies)".
 
 To change the refresh interval or the warning level, edit `REFRESH_MS` or `WARN_AT` at the top of `hooks/register.tsx`.
+
+## Security and privacy
+
+- **Your login stays hidden from the mod.** It asks Claude Code for a one-time handle; Claude Code attaches your credential itself, only to Anthropic's own servers over HTTPS. The mod's code never sees your token or password.
+- **One address only.** The only network request it makes is to `https://api.anthropic.com/api/oauth/usage`, every 3 minutes.
+- **Reads nothing else.** It doesn't read your prompts, files or conversations, writes no files, and runs no commands. It keeps only the latest percentages and reset times in memory.
+- **Updates are opt-in.** Installing gives you the code as it is now; you only get a newer version when you run `claude plugin update usage-meter`. The whole mod is one short file, `hooks/register.tsx`, so you can read it before installing or updating.
+
+Found a problem? Open an issue on this repository.
+
+## License
+
+MIT — see [LICENSE](LICENSE).
