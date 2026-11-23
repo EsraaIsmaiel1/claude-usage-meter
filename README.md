@@ -1,11 +1,11 @@
 # Claude usage meter
 
-A small Claude Code mod that keeps your Claude usage limits on screen, in one line above the prompt:
+A small Claude Code mod that keeps your Claude usage limits on screen, in the status line under the prompt:
 
-**5h ● 42% resets in 2h 14m    Week ● 61% resets in 3d 4h**
+`🟢 5h 42% (resets 2:40 PM)   🟡 Week 61% (resets Fri 8:00 AM)`
 
-- Your current 5-hour session usage and weekly usage, each with when it resets
-- Color-coded: green under 50%, yellow 50–80%, red over 80%
+- Your current 5-hour session usage and weekly usage, each with the local time it resets
+- Color-coded dots: 🟢 under 50%, 🟡 50–80%, 🔴 over 80%
 - Refreshes on its own every 3 minutes
 - A pop-up warning when either limit passes 80% (once per limit period)
 

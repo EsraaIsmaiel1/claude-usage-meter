@@ -52,7 +52,6 @@ async function fetchLive($: EngineInterface): Promise<Pick<Reading, 'five' | 'we
   }
 }
 
-const colorFor = (p: number) => (p > WARN_AT ? 'error' : p >= 50 ? 'warning' : 'success')
 
 const untilText = (resetsAt: string | undefined, now: number) => {
   if (!resetsAt) return ''
@@ -91,7 +90,8 @@ const statusText = (r: Reading) => {
     const clock = clockText(w.resetsAt, r.at)
     return `${dot(w.percent)} ${label} ${w.percent}%${clock ? ` (resets ${clock})` : ''}`
   }
-  return `${part('5h', r.five)}   ${part('Week', r.week)}`
+  const note = r.isLive ? '' : '  (updates after replies)'
+  return `${part('5h', r.five)}   ${part('Week', r.week)}${note}`
 }
 
 async function store($: EngineInterface, next: Reading) {
@@ -142,41 +142,5 @@ export const register: Register = on => {
       })
     }
     return next(e)
-  })
-
-  on('ui.render', { component: 'AbovePrompt' }, async ($, e, next) => {
-    const r = await read($, reading)
-    if (e.props.hasSurvey) return next(e)
-
-    const { Box, Text } = $.ui.resolve(e)
-    const now = await $.clock.now()
-
-    if (!r || (!r.five && !r.week)) {
-      return (
-        <Box>
-          <Text dimColor>Usage: waiting for first reading</Text>
-        </Box>
-      )
-    }
-
-    const cell = (label: string, w: Window | null) =>
-      w ? (
-        <Text>
-          <Text dimColor>{label} </Text>
-          <Text color={colorFor(w.percent)} bold>● {w.percent}%</Text>
-          <Text dimColor> {resetText(w.resetsAt, now)}</Text>
-        </Text>
-      ) : (
-        <Text dimColor>{label} –</Text>
-      )
-
-    return (
-      <Box>
-        {cell('5h', r.five)}
-        <Text dimColor>   </Text>
-        {cell('Week', r.week)}
-        {r.isLive ? null : <Text dimColor>   (updates after replies)</Text>}
-      </Box>
-    )
   })
 }
