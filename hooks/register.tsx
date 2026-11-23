@@ -91,7 +91,7 @@ const statusText = (r: Reading) => {
     return `${dot(w.percent)} ${label} ${w.percent}%${clock ? ` (resets ${clock})` : ''}`
   }
   const note = r.isLive ? '' : '  (updates after replies)'
-  return `${part('5h', r.five)}   ${part('Week', r.week)}${note}`
+  return `${part('Session', r.five)}   ${part('Week', r.week)}${note}`
 }
 
 async function store($: EngineInterface, next: Reading) {
@@ -100,7 +100,7 @@ async function store($: EngineInterface, next: Reading) {
 
   const already = await read($, warned)
   const fresh: string[] = []
-  for (const [label, w] of [['5-hour session', next.five], ['Weekly', next.week]] as const) {
+  for (const [label, w] of [['Session', next.five], ['Weekly', next.week]] as const) {
     if (!w || w.percent <= WARN_AT) continue
     const key = `${label}|${w.resetsAt?.slice(0, 16) ?? ''}`
     if (already.includes(key)) continue

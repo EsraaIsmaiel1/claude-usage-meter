@@ -2,7 +2,7 @@
 
 A small Claude Code mod that keeps your Claude usage limits on screen, in the status line under the prompt:
 
-`🟢 5h 42% (resets 2:40 PM)   🟡 Week 61% (resets Fri 8:00 AM)`
+`🟢 Session 42% (resets 2:40 PM)   🟡 Week 61% (resets Fri 8:00 AM)`
 
 - Your current 5-hour session usage and weekly usage, each with the local time it resets
 - Color-coded dots: 🟢 under 50%, 🟡 50–80%, 🔴 over 80%
