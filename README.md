@@ -29,6 +29,18 @@ claude plugin install usage-meter --marketplace EsraaIsmaiel1/claude-usage-meter
 
 In the Claude desktop app, where `/plugin` does not run: click **+** next to the prompt box, then **Plugins**, **Add marketplace** with `EsraaIsmaiel1/claude-usage-meter`, then **Add plugin**.
 
+## Updating
+
+Installing gives you a copy of the mod as it is that day; new versions don't install themselves. To get the latest version, run this from a shell:
+
+```
+claude plugin update usage-meter
+```
+
+Then start a new Claude Code session (or restart the Claude panel in VS Code) to load it.
+
+To get updates automatically instead, open `/plugin` in a Claude Code terminal session, go to **Marketplaces**, select `claude-usage-meter`, and turn on auto-update if your version of Claude Code offers it.
+
 ## How it gets the numbers
 
 Every 3 minutes it asks Anthropic for the same figures Claude Code's `/usage` shows, using Claude Code's own login (the mod never sees your token). That address is not a documented API, so if it ever stops working the meter falls back to the figures that come with each Claude reply and shows "(updates after replies)".
