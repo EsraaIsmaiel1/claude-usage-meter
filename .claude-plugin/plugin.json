@@ -1,1 +1,1 @@
-{ "name": "usage-meter", "version": "0.1.0", "description": "Small always-visible meter for your 5-hour and weekly Claude usage limits", "license": "MIT", "types": "./types/index.d.ts" }
+{ "name": "usage-meter", "version": "0.2.0", "description": "Small always-visible meter for your 5-hour and weekly Claude usage limits", "license": "MIT", "types": "./types/index.d.ts" }

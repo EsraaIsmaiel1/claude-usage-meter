@@ -68,6 +68,21 @@ const untilText = (resetsAt: string | undefined, now: number) => {
   return `resets in ${m}m`
 }
 
+const clockText = (resetsAt: string | undefined, now: number) => {
+  if (!resetsAt) return ''
+  const at = new Date(resetsAt)
+  if (!Number.isFinite(at.getTime())) return ''
+  const time = at.toLocaleTimeString('en-US', { hour: 'numeric', minute: '2-digit' })
+  const isToday = at.toDateString() === new Date(now).toDateString()
+  return isToday ? time : `${at.toLocaleDateString('en-US', { weekday: 'short' })} ${time}`
+}
+
+const resetText = (resetsAt: string | undefined, now: number) => {
+  const until = untilText(resetsAt, now)
+  const clock = clockText(resetsAt, now)
+  return clock && until !== 'resetting' ? `${until} · ${clock}` : until
+}
+
 async function store($: EngineInterface, next: Reading) {
   await update($, reading, () => next)
 
@@ -78,7 +93,7 @@ async function store($: EngineInterface, next: Reading) {
     const key = `${label}|${w.resetsAt?.slice(0, 16) ?? ''}`
     if (already.includes(key)) continue
     fresh.push(key)
-    $.ui.toast(`⚠ ${label} usage is at ${w.percent}% (${untilText(w.resetsAt, next.at)})`, { timeoutMs: 10000 })
+    $.ui.toast(`⚠ ${label} usage is at ${w.percent}% (${resetText(w.resetsAt, next.at)})`, { timeoutMs: 10000 })
   }
   if (fresh.length) await update($, warned, list => [...list, ...fresh].slice(-20))
 }
@@ -137,7 +152,7 @@ export const register: Register = on => {
         <Text>
           <Text dimColor>{label} </Text>
           <Text color={colorFor(w.percent)} bold>● {w.percent}%</Text>
-          <Text dimColor> {untilText(w.resetsAt, now)}</Text>
+          <Text dimColor> {resetText(w.resetsAt, now)}</Text>
         </Text>
       ) : (
         <Text dimColor>{label} –</Text>
