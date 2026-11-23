@@ -83,8 +83,20 @@ const resetText = (resetsAt: string | undefined, now: number) => {
   return clock && until !== 'resetting' ? `${until} · ${clock}` : until
 }
 
+const dot = (p: number) => (p > WARN_AT ? '🔴' : p >= 50 ? '🟡' : '🟢')
+
+const statusText = (r: Reading) => {
+  const part = (label: string, w: Window | null) => {
+    if (!w) return `${label} –`
+    const clock = clockText(w.resetsAt, r.at)
+    return `${dot(w.percent)} ${label} ${w.percent}%${clock ? ` (resets ${clock})` : ''}`
+  }
+  return `${part('5h', r.five)}   ${part('Week', r.week)}`
+}
+
 async function store($: EngineInterface, next: Reading) {
   await update($, reading, () => next)
+  $.ui.status(next.five || next.week ? statusText(next) : undefined)
 
   const already = await read($, warned)
   const fresh: string[] = []
